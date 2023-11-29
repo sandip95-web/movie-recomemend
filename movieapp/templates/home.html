@@ -1,0 +1,80 @@
+
+{% extends 'base.html' %}
+{% block title %}Home{% endblock title %}
+
+{% block content %}
+<div class="container wrapper">
+  {% if recommended %}
+  <h5 class="my-4 text-light">Perfect Pick for You</h5>
+  <div class="row">
+    {% for item in recommended %}
+    <div class="col-3 mb-3">
+      <div class="card" style="width: 12rem;">
+        <img class="card-img-top" src="{{ item.image }}" alt="Card image cap" height="250px" width="200px">
+        <div class="card-footer">
+          <p class="text-dark">{{item.title}}</p>
+          <small class="text-muted">{{ item.genres }}</small>
+          <small class="text-muted">{{ item.movieduration }}</small>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <h5 class="my-4 text-light">Nothing to Recommend</h5>
+  {% endif %}
+
+  <br><br>
+  <h1>Movies List</h1>
+  <!-- Slideshow starts here -->
+{% for movie, range, nSlides in allMovies %}
+<h5 class="my-4 text-light">{{ movie.0.genres }}</h5>
+<div class="row">
+  <div id="demo{{ forloop.counter }}" class="col carousel slide my-3" data-ride="carousel">
+    <ul class="carousel-indicators">
+      {% for i in range %}
+      <li data-target="#demo{{ forloop.parentloop.counter }}" data-slide-to="{{ i }}"></li>
+      {% endfor %}
+    </ul>
+
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <div class="col-xs-12 col-sm-6 col-md-3 mx-auto"> <!-- Centered column -->
+          <div class="card" style="width: 12rem; height: 20rem; overflow: hidden;">
+            <img class="card-img-top" src="{{ movie.0.image.url }}" alt="Card image cap" style="object-fit: cover; height: 50%; width: 100%;">
+            <div class="card-body">
+              <h5 class="card-title" style="color:black;white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ movie.0.title }}</h5>
+              <small class="text-muted">{{ movie.0.genres }}</small>
+              <small class="text-muted">{{ movie.0.movieduration }}</small>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% for i in movie|slice:"1:" %}
+      <div class="carousel-item">
+        <div class="col-xs-12 col-sm-6 col-md-3 mx-auto"> <!-- Centered column -->
+          <div class="card" style="width: 12rem; height: 20rem; overflow: hidden;">
+            <img class="card-img-top" src="{{ i.image.url }}" alt="Card image cap" style="object-fit: cover; height: 50%; width: 100%;">
+            <div class="card-body">
+              <h5 class="card-title" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ i.title }}</h5>
+              <small class="text-muted">{{ i.genres }}</small>
+              <small class="text-muted">{{ i.movieduration }}</small>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Left and right controls for the slide -->
+    <a class="carousel-control-prev" href="#demo{{ forloop.counter }}" data-slide="prev">
+      <span class="carousel-control-prev-icon"></span>
+    </a>
+    <a class="carousel-control-next" href="#demo{{ forloop.counter }}" data-slide="next">
+      <span class="carousel-control-next-icon"></span>
+    </a>
+  </div>
+</div>
+{% endfor %}
+
+{% endblock %}
