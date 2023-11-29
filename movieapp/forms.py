@@ -45,3 +45,13 @@ class AddRatingForm(forms.ModelForm):
         widgets={
             'rating':forms.TextInput(attrs={'type':'range','step':'1','min':'0','max':'5','class':{'custom-range','border-0'}})
         }
+
+
+class MovieFilterForm(forms.Form):
+    genres = forms.ModelMultipleChoiceField(
+        queryset=Movie.objects.values_list('genres', flat=True).distinct(),
+        widget=forms.CheckboxSelectMultiple,
+        required=False,
+    )
+   
+        

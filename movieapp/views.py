@@ -205,10 +205,25 @@ def user_login(request):
 
 
 
+# views.py
+
 def home(request):
-    params=filterMovieByGenre()
-    params['recommended']=generateRecommendation(request)
-    return render(request,'home.html',params)
+    params = filterMovieByGenre()
+
+    # Get the recommendationToggle value from the request
+    recommendationToggle = request.GET.get('recommendationToggle', None)
+
+    # Check if the value is 'on'
+    show_recommendations = recommendationToggle == 'on'
+
+    # If show_recommendations is True, generate recommendations
+    params['recommended'] = generateRecommendation(request) if show_recommendations else []
+
+    # Pass the recommendationToggle value to the template
+    params['recommendationToggle'] = show_recommendations
+
+    return render(request, 'home.html', params)
+
 
 def addmovie(request):
     if request.user.is_authenticated:

@@ -1,0 +1,7 @@
+{% extends 'base.html' %} {% block title %}Filter{% endblock title %} {%block
+content %}
+<form method="get" action="{% url 'your_search_view' %}">
+  {{ form.as_p }}
+  <button type="submit">Filter</button>
+</form>
+{%endblock%}
